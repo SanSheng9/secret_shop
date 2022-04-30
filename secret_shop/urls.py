@@ -26,6 +26,10 @@ router.register(r'product', ProductViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+    path("api/", include("shop.urls"))
+
 ]
 
 urlpatterns += router.urls
