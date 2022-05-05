@@ -17,18 +17,20 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
-from shop.views import ProductViewSet
+from shop.views import ProductViewSet, UserProductsRelationView
 
 router = SimpleRouter()
 
 router.register(r'product', ProductViewSet)
+router.register(r'product_relations', UserProductsRelationView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    path("api/", include("shop.urls"))
+    path("api/", include("shop.urls")),
+    path('__debug__/', include('debug_toolbar.urls')),
 
 ]
 

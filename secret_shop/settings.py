@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 
     'rest_framework_simplejwt',
+    "debug_toolbar",
 
 ]
 
@@ -57,6 +58,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware',
+
 ]
 
 ROOT_URLCONF = 'secret_shop.urls'
@@ -181,3 +185,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

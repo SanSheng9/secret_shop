@@ -49,3 +49,5 @@ class ProductApiTestCase(APITestCase):
         })
         response = self.client.post(url, data=data, content_type="application/json")
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+        self.assertEqual(3, Product.objects.all().count())
+    #    self.assertEqual(self.user, Product.objects.last().seller)
