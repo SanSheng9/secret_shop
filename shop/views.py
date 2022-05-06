@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import Avg
+from django.db.models import Avg, Value, Case, When
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -15,7 +15,10 @@ from shop.serializers import ProductSerializer, UserSerializer, UserProductRelat
 
 # Product
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all().annotate(rating=(Avg('userproductrelation__rate'))).select_related('seller')
+    queryset = Product.objects.all().annotate(
+        rating=(Avg('userproductrelation__rate')),
+    #    favourites=Value(Case(When(userproductrelation__favourites=True or False, then='1')))
+    ).select_related('seller')
     serializer_class = ProductSerializer
     permission_classes = [IsOwneOrStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -26,6 +29,7 @@ class ProductViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.validated_data['seller'] = self.request.user
         serializer.save()
+
 
 
 # Users
