@@ -15,10 +15,7 @@ from shop.serializers import ProductSerializer, UserSerializer, UserProductRelat
 
 # Product
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all().annotate(
-        rating=(Avg('userproductrelation__rate')),
-    #    favourites=Value(Case(When(userproductrelation__favourites=True or False, then='1')))
-    ).select_related('seller')
+    queryset = Product.objects.all().select_related('seller')
     serializer_class = ProductSerializer
     permission_classes = [IsOwneOrStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
