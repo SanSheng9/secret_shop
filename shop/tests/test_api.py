@@ -5,27 +5,16 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from shop.models import Product
+from shop.models import Product, UserProductRelation
 from shop.serializers import ProductSerializer
 
 
 class ProductApiTestCase(APITestCase):
-    profile_list_url = reverse('all-profiles')
-
     def setUp(self):
-        self.product_1 = Product.objects.create(name='Test product 1', price='100')
-        self.product_2 = Product.objects.create(name='Test product 2', price='150')
-        data = json.dumps({
-            "username": "testuser",
-            "password": "oral1234"
-        })
-        self.user = self.client.post("/auth/users/", data, content_type="application/json")
-        response = self.client.post("/auth/jwt/create/", data, content_type="application/json")
-        self.token = response.data["access"]
-        self.api_authentication()
-
-    def api_authentication(self):
-        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + self.token)
+        self.product_1 = Product.objects.create(name='Test product 1', price='100', count='2')
+        self.product_2 = Product.objects.create(name='Test product 2', price='150', count='4')
+        self.user = User.objects.create(username='test_user')
+        UserProductRelation.objects.create(user=self.user, product=self.product_1, favourites=True, rate=5)
 
     def test_get(self):
         url = reverse('product-list')
@@ -42,12 +31,14 @@ class ProductApiTestCase(APITestCase):
         self.assertEqual(serializer_data, response.data)
 
     def test_create(self):
+        self.assertEqual(2, Product.objects.all().count())
         url = reverse('product-list')
+        self.client.force_login(self.user)
         data = json.dumps({
             "name": "Product test",
-            "price": "100.00"
+            "price": "100.00",
         })
         response = self.client.post(url, data=data, content_type="application/json")
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(3, Product.objects.all().count())
-    #    self.assertEqual(self.user, Product.objects.last().seller)
+        self.assertEqual(self.user, Product.objects.last().seller)

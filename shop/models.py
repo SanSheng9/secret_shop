@@ -7,7 +7,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='my_products')
     shoppers = models.ManyToManyField(User, through='UserProductRelation', related_name='products')
-    count = models.PositiveSmallIntegerField(blank=False)
+    count = models.PositiveSmallIntegerField(blank=False, default=1)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=None, null=True)
 
     def __str__(self):

@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from shop.models import Product, UserProductRelation
-from shop.permissions import IsOwnerProfileOrReadOnly, IsOwneOrStaffOrReadOnly
+from shop.permissions import IsOwnerProfileOrReadOnly, IsOwnerOrStaffOrReadOnly
 from shop.serializers import ProductSerializer, UserSerializer, UserProductRelationSerializer
 
 
@@ -17,7 +17,7 @@ from shop.serializers import ProductSerializer, UserSerializer, UserProductRelat
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all().select_related('seller')
     serializer_class = ProductSerializer
-    permission_classes = [IsOwneOrStaffOrReadOnly]
+    permission_classes = [IsOwnerOrStaffOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filter_fields = ['price']
     search_fields = ['name']

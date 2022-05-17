@@ -36,6 +36,7 @@ class UserTestCase(APITestCase):
 
     # проверьте, чтобы получить данные профиля аутентифицированного пользователя
     def test_userprofile_detail_retrieve(self):
-        response = self.client.get(reverse('profile', kwargs={'pk': 1}))
+        user_pk = self.user.data['id']
+        response = self.client.get(reverse('profile', kwargs={'pk': user_pk}))
         # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
