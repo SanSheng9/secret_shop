@@ -11,7 +11,7 @@ class ProductSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'price', 'seller', 'rating')
+        fields = ('id', 'name', 'img', 'price', 'seller', 'rating')
 
     #def get_favourites(self, instance, request):
     #    obj = UserProductRelation.objects.values('favourites').filter(pk=instance.id, user=request.user)
@@ -22,7 +22,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'is_superuser', 'favourites')
+        fields = ('id', 'username', 'avatar', 'is_superuser', 'favourites')
 
     def get_favourites(self, instance):
         return UserProductRelation.objects.values_list('product', flat=True).filter(user=instance.id, favourites=True)

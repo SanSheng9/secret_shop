@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models import Avg, Value, Case, When
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
@@ -8,7 +7,7 @@ from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
-from shop.models import Product, UserProductRelation
+from shop.models import Product, UserProductRelation, UserProfile
 from shop.permissions import IsOwnerProfileOrReadOnly, IsOwnerOrStaffOrReadOnly
 from shop.serializers import ProductSerializer, UserSerializer, UserProductRelationSerializer
 
@@ -31,7 +30,7 @@ class ProductViewSet(ModelViewSet):
 
 # Users
 class UserListCreateView(ListCreateAPIView):
-    queryset = User.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
@@ -41,7 +40,7 @@ class UserListCreateView(ListCreateAPIView):
 
 
 class UserDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsOwnerProfileOrReadOnly, IsAuthenticated]
 
