@@ -38,6 +38,7 @@ class UserProductRelation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     favourites = models.BooleanField(default=False)
     rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES, null=True)
+    bucket = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username}: {self.product}, RATE: {self.rate}'
